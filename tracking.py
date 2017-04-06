@@ -46,7 +46,7 @@ while True:
     pointHistory.appendleft(center)
 
     # draw history
-    for i in xrange(0, 1):
+    for i in range(1, len(pointHistory)):
         if pointHistory[i - 1] is None or pointHistory[i] is None:
             continue
 
