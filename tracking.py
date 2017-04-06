@@ -1,10 +1,13 @@
 import cv2
 import imutils
+import numpy as np
+from collections import deque
 
 from rangeDetector import selectRange
 
 lowerColor = (169, 140, 131)
 upperColor = (180, 255, 255)
+pointHistory = deque(maxlen=30)
 
 # start webcam
 camera = cv2.VideoCapture(1)
@@ -39,6 +42,16 @@ while True:
             # draw outline and center of tracked ball
             cv2.circle(frame, (int(x), int(y)), int(radius), (0, 255, 255), 2)
             cv2.circle(frame, center, 5, (0, 0, 255), -1)
+
+    pointHistory.appendleft(center)
+
+    # draw history
+    for i in xrange(0, 1):
+        if pointHistory[i - 1] is None or pointHistory[i] is None:
+            continue
+
+        thickness = int(np.sqrt(pointHistory.maxlen / float(i + 1)) * 2.5)
+        cv2.line(frame, pointHistory[i - 1], pointHistory[i], (0, 0, 255), thickness)
 
     cv2.imshow("Frame", frame)
 
