@@ -1,11 +1,13 @@
 import cv2
 import imutils
 
-lowerRed = (169, 140, 131)
-upperRed = (180, 255, 255)
+from rangeDetector import selectRange
+
+lowerColor = (169, 140, 131)
+upperColor = (180, 255, 255)
 
 # start webcam
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(1)
 
 while True:
     # get current webcam frame
@@ -13,10 +15,11 @@ while True:
 
     # resize and convert frame to hsv
     frame = imutils.resize(frame, width=600)
+    copy = frame.copy()
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     # generate mask
-    mask = cv2.inRange(hsv, lowerRed, upperRed)
+    mask = cv2.inRange(hsv, lowerColor, upperColor)
     mask = cv2.erode(mask, None, iterations=2)
     mask = cv2.dilate(mask, None, iterations=2)
 
@@ -26,7 +29,7 @@ while True:
 
     if len(contours) > 0:
         # find largest contour
-        c = max(contours, key=cv2.countourArea)
+        c = max(contours, key=cv2.contourArea)
         ((x, y), radius) = cv2.minEnclosingCircle(c)
         M = cv2.moments(c)
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
@@ -43,6 +46,10 @@ while True:
     key = cv2.waitKey(1) & 0xFF
     if key == ord('q'):
         break
+    elif key == ord('a'):
+        (lowerColor, upperColor) = selectRange(copy, values=(lowerColor, upperColor))
+        print("lowerColor: " + str(lowerColor))
+        print("upperColor: " + str(upperColor))
 
 camera.release()
 cv2.destroyAllWindows()
