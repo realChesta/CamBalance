@@ -15,15 +15,14 @@ void setup() {
 }
 
 void loop() {
-  int degs = Serial.parseInt();
+  int steps = Serial.parseInt();
 
-  if (degs != 0)
+  if (steps != 0)
   {
-    int totalSteps = degs / 7.5;
-    int stepsToDo = totalSteps - currentSteps;
+    int stepsToDo = steps - currentSteps;
 
     myStepper.step(stepsToDo);
-    currentSteps = totalSteps;
+    currentSteps = steps;
     Serial.println("done");
   }
 }

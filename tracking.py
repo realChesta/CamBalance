@@ -6,9 +6,9 @@ from collections import deque
 from rangeDetector import selectRange
 
 
-def track(onNewCoordinate):
+def track(onNewCoordinate = None):
     # start webcam
-    camera = cv2.VideoCapture(1)
+    camera = cv2.VideoCapture(0)
 
     lowerColor = (169, 140, 131)
     upperColor = (180, 255, 255)
@@ -39,7 +39,8 @@ def track(onNewCoordinate):
             M = cv2.moments(c)
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
-            onNewCoordinate(center)
+            if onNewCoordinate is not None:
+                onNewCoordinate(center, pointHistory)
 
             # TODO: find minimum radius
             if radius > 5:
