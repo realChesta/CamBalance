@@ -13,12 +13,12 @@ def onPosition(pos):
     arduino.write((str(deg) + '\r').encode('UTF-8'))
     print(arduino.readline())
 
-tracking.track(onPosition)
+#tracking.track(onPosition)
 
-#while True:
-#    deg = (str(randint(1, 359)) + "\n").encode('UTF-8')
-#    #(input("Enter desired degrees: ") + "\n").encode('UTF-8')
-#    print(deg)
-#    arduino.write(deg)
-#    print(arduino.readline())
+while True:
+    #deg = (str(randint(1, 359)) + "\n").encode('UTF-8')
+    deg = (input("Enter desired degrees: ") + "\n").encode('UTF-8')
+    print(deg)
+    arduino.write(deg)
+    print(arduino.readline())
 
